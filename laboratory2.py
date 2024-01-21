@@ -76,3 +76,21 @@ def _get_info(self):
             self._render_frame()
 
         return observation, info
+    
+ def step(self, action):
+        # Map the action (element of {0,1,2,3}) to the direction we walk in
+        direction = self._action_to_direction[action]
+        # We use `np.clip` to make sure we don't leave the grid
+        self._agent_location = np.clip(
+            self._agent_location + direction, 0, self.size - 1
+        )
+        # An episode is done iff the agent has reached the target
+        terminated = np.array_equal(self._agent_location, self._target_location)
+        reward = 1 if terminated else 0  # Binary sparse rewards
+        observation = self._get_obs()
+        info = self._get_info()
+
+        if self.render_mode == "human":
+            self._render_frame()
+
+        return observation, reward, terminated, False, info
