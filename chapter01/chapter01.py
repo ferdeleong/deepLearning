@@ -3,9 +3,8 @@ import fastbook
 
 fastbook.setup_book()
 
-from fastbook import *
+# Exercise 1: Dog vs Cat
 
-# Import library
 from fastai.vision.all import *
 
 # Dowload and extract standard dataset
@@ -40,6 +39,8 @@ learn = vision_learner(dls, resnet34, metrics=error_rate)
 '''
 learn.fine_tune(1)
 
+# Upload image from device 
+
 uploader = widgets.FileUpload()
 uploader
 
@@ -48,9 +49,11 @@ is_cat,_,probs = learn.predict(img)
 print(f"Is this a cat?: {is_cat}.")
 print(f"Probability it's a cat: {probs[1].item():.6f}")
 
-# Train segmentation model
+# Exercise 2: Semantic Segmentation
 
 path = untar_data(URLs.CAMVID_TINY)
+
+
 dls = SegmentationDataLoaders.from_label_func(
     path, bs=8, fnames = get_image_files(path/"images"),
     label_func = lambda o: path/'labels'/f'{o.stem}_P{o.suffix}',
@@ -60,3 +63,11 @@ learn = unet_learner(dls, resnet34)
 learn.fine_tune(8)
 
 learn.show_results(max_n=6, figsize=(7,8))
+
+# Exercise 3: NLP Text classification
+
+dls = TextDataLoaders.from_folder(untar_data(URLs.IMDB), valid='test', bs=32)
+learn = text_classifier_learner(dls, AWD_LSTM, drop_mult=0.5, metrics=accuracy)
+learn.fine_tune(4, 1e-2)
+
+learn.predict("I really liked that movie!")
