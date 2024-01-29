@@ -66,8 +66,40 @@ learn.show_results(max_n=6, figsize=(7,8))
 
 # Exercise 3: NLP Text classification
 
-dls = TextDataLoaders.from_folder(untar_data(URLs.IMDB), valid='test', bs=32)
+dls = TextDataLoaders.from_folder(untar_data(URLs.IMDB), valid='test', b
+                                  s=32)
 learn = text_classifier_learner(dls, AWD_LSTM, drop_mult=0.5, metrics=accuracy)
 learn.fine_tune(4, 1e-2)
 
 learn.predict("I really liked that movie!")
+
+'''
+- Categorical columns (contain values that are one of a discrete set of choices)
+- Continuous columns (contain a number that represents a quantity)
+
+'''
+
+from fastai.tabular.all import *
+
+path = untar_data(URLs.ADULT_SAMPLE)
+
+dls = TabularDataLoaders.from_csv(path/'adult.csv', path=path, y_names="salary",
+    cat_names = ['workclass', 'education', 'marital-status', 'occupation',
+                 'relationship', 'race'],
+    cont_names = ['age', 'fnlwgt', 'education-num'],
+    procs = [Categorify, FillMissing, Normalize])
+
+learn = tabular_learner(dls, metrics=accuracy)
+
+learn.fit_one_cycle(3)
+
+# Predict number vs categories
+
+from fastai.collab import *
+
+path = untar_data(URLs.ML_SAMPLE)
+dls = CollabDataLoaders.from_csv(path/'ratings.csv')
+learn = collab_learner(dls, y_range=(0.5,5.5)) # Indicate target range
+learn.fine_tune(10)
+
+learn.show_results()
