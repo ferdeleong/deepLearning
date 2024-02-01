@@ -93,7 +93,7 @@ learn = tabular_learner(dls, metrics=accuracy)
 
 learn.fit_one_cycle(3)
 
-# Predict number vs categories
+# Exercise 4: Predict number vs categories
 
 from fastai.collab import *
 
@@ -103,3 +103,4 @@ learn = collab_learner(dls, y_range=(0.5,5.5)) # Indicate target range
 learn.fine_tune(10)
 
 learn.show_results()
+
