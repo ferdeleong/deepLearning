@@ -28,3 +28,19 @@ fns
 failed = verify_images(fns)
 
 failed
+
+failed.map(Path.unlink);
+
+
+class DataLoaders(GetAttr):
+    def __init__(self, *loaders): self.loaders = loaders
+    def __getitem__(self, i): return self.loaders[i] train,valid = add_props(lambda i,self: self[i])
+
+bears = DataBlock(
+        blocks=(ImageBlock, CategoryBlock),
+        get_items=get_image_files,
+        splitter=RandomSplitter(valid_pct=0.2, seed=42),
+        get_y=parent_label,
+        item_tfms=Resize(128))
+
+blocks=(ImageBlock, CategoryBlock)
