@@ -44,3 +44,25 @@ bears = DataBlock(
         item_tfms=Resize(128))
 
 blocks=(ImageBlock, CategoryBlock)
+
+get_items=get_image_files
+
+
+splitter=RandomSplitter(valid_pct=0.2, seed=42)
+
+get_y=parent_label
+
+item_tfms=Resize(128)
+
+dls = bears.dataloaders(path)
+
+
+dls.valid.show_batch(max_n=4, nrows=1)
+
+bears = bears.new(item_tfms=Resize(128, ResizeMethod.Squish))
+dls = bears.dataloaders(path)
+dls.valid.show_batch(max_n=4, nrows=1)
+
+bears = bears.new(item_tfms=Resize(128, ResizeMethod.Pad, pad_mode='zeros'))
+dls = bears.dataloaders(path)
+dls.valid.show_batch(max_n=4, nrows=1)
