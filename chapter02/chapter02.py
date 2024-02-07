@@ -75,4 +75,12 @@ bears = bears.new(item_tfms=Resize(128), batch_tfms=aug_transforms(mult=2))
 dls = bears.dataloaders(path)
 dls.train.show_batch(max_n=8, nrows=2, unique=True)
 
+bears = bears.new(
+        item_tfms=RandomResizedCrop(224, min_scale=0.5),
+        batch_tfms=aug_transforms())
+dls = bears.dataloaders(path)
+
+earn = cnn_learner(dls, resnet18, metrics=error_rate)
+learn.fine_tune(4)
+
 
