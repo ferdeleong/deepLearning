@@ -66,3 +66,21 @@ dls.valid.show_batch(max_n=4, nrows=1)
 bears = bears.new(item_tfms=Resize(128, ResizeMethod.Pad, pad_mode='zeros'))
 dls = bears.dataloaders(path)
 dls.valid.show_batch(max_n=4, nrows=1)
+
+bears = bears.new(item_tfms=RandomResizedCrop(128, min_scale=0.3))
+dls = bears.dataloaders(path)
+dls.train.show_batch(max_n=4, nrows=1, unique=True)
+
+bears = bears.new(item_tfms=Resize(128), batch_tfms=aug_transforms(mult=2))
+dls = bears.dataloaders(path)
+dls.train.show_batch(max_n=8, nrows=2, unique=True)
+
+bears = bears.new(
+        item_tfms=RandomResizedCrop(224, min_scale=0.5),
+        batch_tfms=aug_transforms())
+dls = bears.dataloaders(path)
+
+earn = cnn_learner(dls, resnet18, metrics=error_rate)
+learn.fine_tune(4)
+
+
