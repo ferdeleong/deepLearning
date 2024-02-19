@@ -79,8 +79,6 @@ learn.predict("I really liked that movie!")
 
 '''
 
-from fastai.tabular.all import *
-
 path = untar_data(URLs.ADULT_SAMPLE)
 
 dls = TabularDataLoaders.from_csv(path/'adult.csv', path=path, y_names="salary",
@@ -94,8 +92,6 @@ learn = tabular_learner(dls, metrics=accuracy)
 learn.fit_one_cycle(3)
 
 # Exercise 4: Predict number vs categories
-
-from fastai.collab import *
 
 path = untar_data(URLs.ML_SAMPLE)
 dls = CollabDataLoaders.from_csv(path/'ratings.csv')
