@@ -5,7 +5,7 @@ fastbook.setup_book()
 
 from fastbook import *
 
-key = os.environ.get('AZURE_SEARCH_KEY', '7fb13dd6f7a34b54b9eede7eb0bc971b')
+key = os.environ.get('AZURE_SEARCH_KEY', 'XXX')
 
 search_images_bing
 
